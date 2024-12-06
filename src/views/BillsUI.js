@@ -47,7 +47,10 @@ export default ({ data: bills, loading, error }) => {
   } else if (error) {
     return ErrorPage(error)
   }
-  
+  // if the "bills" arrays exists, sort it from earliest to latest
+  if(bills) { 
+    bills.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
   return (`
     <div class='layout'>
       ${VerticalLayout(120)}
