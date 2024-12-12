@@ -24,21 +24,30 @@ export default class NewBill {
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
-
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true
-        }
-      })
-      .then(({fileUrl, key}) => {
-        console.log(fileUrl)
-        this.billId = key
-        this.fileUrl = fileUrl
-        this.fileName = fileName
-      }).catch(error => console.error(error))
+    
+    // prevent entering a document that has an extension other than jpg, jpeg or png
+    let fileExtension = null;
+    const filenameArray = fileName.split('.');
+    fileExtension = filenameArray[filenameArray.length -1].toLowerCase();
+    const acceptedExtensions = ['png', 'jpg', 'jpeg'];
+    if(!acceptedExtensions.includes(fileExtension)) {
+      alert('Le fichier doit avoir une extention "jpg", "png" ou "jpeg"')
+    } else {
+      this.store
+        .bills()
+        .create({
+          data: formData,
+          headers: {
+            noContentType: true
+          }
+        })
+        .then(({fileUrl, key}) => {
+          console.log(fileUrl)
+          this.billId = key
+          this.fileUrl = fileUrl
+          this.fileName = fileName
+        }).catch(error => console.error(error))
+    }
   }
   handleSubmit = e => {
     e.preventDefault()
