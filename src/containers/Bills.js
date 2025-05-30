@@ -33,6 +33,10 @@ export default class {
       .bills()
       .list()
       .then(snapshot => {
+        // if the "snapshot" arrays exists, sort it from earliest to latest
+        if(snapshot) { 
+          snapshot.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
 
         const bills = snapshot
           .map(doc => {
