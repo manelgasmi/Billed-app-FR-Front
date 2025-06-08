@@ -29,58 +29,6 @@ describe("Given I am logged in as an employee", () => {
     );
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  // Test form submission with valid inputs
-  describe("When I fill out and submit the form with valid data", () => {
-    let newBill;
-    let form;
-
-    beforeEach(() => {
-      document.body.innerHTML = NewBillUI();
-      newBill = new NewBill({
-        document,
-        onNavigate,
-        store: mockStore,
-        localStorage: window.localStorage,
-      });
-      form = screen.getByTestId("form-new-bill");
-    });
-
-    test("Then it should create a new bill and redirect to the Bills page", () => {
-      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
-      form.addEventListener("submit", handleSubmit);
-
-      // Get form input elements
-      const expenseType = screen.getByTestId("expense-type");
-      const expenseName = screen.getByTestId("expense-name");
-      const datepicker = screen.getByTestId("datepicker");
-      const amount = screen.getByTestId("amount");
-      const pct = screen.getByTestId("pct");
-      const file = screen.getByTestId("file");
-
-      // Simulate user input
-      fireEvent.change(expenseType, { target: { value: "Transports" } });
-      fireEvent.change(expenseName, { target: { value: "Billet avion" } });
-      fireEvent.change(datepicker, { target: { value: "2025-04-05" } });
-      fireEvent.change(amount, { target: { value: "100" } });
-      fireEvent.change(pct, { target: { value: "20" } });
-      fireEvent.change(file, {
-        target: {
-          files: [new File(["file"], "file.png", { type: "image/png" })],
-        },
-      });
-
-      // Submit the form
-      fireEvent.submit(form);
-
-      // Ensure handleSubmit was called
-      expect(handleSubmit).toHaveBeenCalled();
-    });
-  });
-
   // File upload tests
   describe("When I upload a file", () => {
     let newBill;
@@ -128,6 +76,53 @@ describe("Given I am logged in as an employee", () => {
     });
   });
 
+  // Test form submission with valid inputs
+  describe("When I fill out and submit the form with valid data", () => {
+    let newBill;
+    let form;
+
+    beforeEach(() => {
+      document.body.innerHTML = NewBillUI();
+      newBill = new NewBill({
+        document,
+        onNavigate,
+        store: mockStore,
+        localStorage: window.localStorage,
+      });
+      form = screen.getByTestId("form-new-bill");
+    });
+
+    test("Then it should create a new bill and redirect to the Bills page (POST)", () => {
+      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
+      form.addEventListener("submit", handleSubmit);
+
+      // Get form input elements
+      const expenseType = screen.getByTestId("expense-type");
+      const expenseName = screen.getByTestId("expense-name");
+      const datepicker = screen.getByTestId("datepicker");
+      const amount = screen.getByTestId("amount");
+      const pct = screen.getByTestId("pct");
+      const file = screen.getByTestId("file");
+
+      // Simulate user input
+      fireEvent.change(expenseType, { target: { value: "Transports" } });
+      fireEvent.change(expenseName, { target: { value: "Billet avion" } });
+      fireEvent.change(datepicker, { target: { value: "2025-04-05" } });
+      fireEvent.change(amount, { target: { value: "100" } });
+      fireEvent.change(pct, { target: { value: "20" } });
+      fireEvent.change(file, {
+        target: {
+          files: [new File(["file"], "file.png", { type: "image/png" })],
+        },
+      });
+
+      // Submit the form
+      fireEvent.submit(form);
+
+      // Ensure handleSubmit was called
+      expect(handleSubmit).toHaveBeenCalled();
+    });
+  });
   // Handle API errors
   describe("When the API responds with an error", () => {
     let newBill;

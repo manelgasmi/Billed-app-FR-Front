@@ -36,7 +36,7 @@ describe("Given I am connected as an employee", () => {
       await waitFor(() => screen.getByTestId("icon-window"));
       const windowIcon = screen.getByTestId("icon-window");
       const iconActive = windowIcon.classList.contains("active-icon");
-      expect(iconActive).toHaveClass;
+      expect(iconActive).toBeTruthy();
     });
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills });
