@@ -36,6 +36,7 @@ describe("Given I am connected as an employee", () => {
       await waitFor(() => screen.getByTestId("icon-window"));
       const windowIcon = screen.getByTestId("icon-window");
       const iconActive = windowIcon.classList.contains("active-icon");
+      //add expect mention
       expect(iconActive).toBeTruthy();
     });
     test("Then bills should be ordered from earliest to latest", () => {
@@ -49,6 +50,8 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
     });
+
+    // checks that the handleClickNewBill function is properly triggered when clicking the "New Bill" button.
     test('Then clicking on the "New Bill" button should navigate to the New Bill page', async () => {
       const newBillButton = screen.getAllByTestId("btn-new-bill");
       newBillButton[0].click();
@@ -56,6 +59,8 @@ describe("Given I am connected as an employee", () => {
         expect(window.location.href).toContain(ROUTES_PATH.NewBill)
       );
     });
+
+    // verifies the handleClickIconEye function displays the modal on icon-eye click.
     test('Then clicking on the "Eye" icon should display the bill image in a modal', async () => {
       const modal = document.getElementById("modaleFile");
       $.fn.modal = jest.fn(() => modal.classList.add("show"));
@@ -64,6 +69,8 @@ describe("Given I am connected as an employee", () => {
       eyeIcons[0].click();
       expect(modal).toHaveClass("show");
     });
+
+    // add integration test GET bills (404 & 500 error)
     test("fetches bills from an API and fails with 404 message error", async () => {
       jest.spyOn(mockStore, "bills").mockImplementationOnce(() => {
         return {
